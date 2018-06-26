@@ -1,26 +1,40 @@
 <?php
+  include('./code.php');
+//   echo $_SESSION['code'];
+//   if($_SESSION['code']==0){
+      
+//   }
+  $code = create();
+  $_SESSION['code'] = $code;
   $message = '';
   if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
         $arr = $_POST;
         $name = $arr['name'];
         $password = $arr['password'];
-        class Person {
-            public $name = 'admin';
-            public $password = 'admin';
-        }
-        $p = new Person();
-        if ( $name == $p->name && $password == $p->password ) {
-            // 当用户名与 密码都验证成功后
-            session_start(); // 只要调用这个函数, 服务器就会开辟一个 session 内存
-            // 同时给浏览器发送一个 PHPSESSID 的 数据, 数据值简单的理解为这个 session 内存的 id
-            // 将 当前用户的 ID存储到 SESSION 中
-            $_SESSION[ "curr_user_login_id" ] = $p->name;
-            // 直接跳转到 index.php 页面
-            header( "location: ./index.php" );
-            exit;
-           
-        } else {
-            $message = "用户名或密码错误( 密码错误 )";
+        $keycode = $arr['code'];
+        if($keycode==$_SESSION['code']){
+            $message = $_SESSION['code'];
+        }else{
+            class Person {
+                public $name = 'admin';
+                public $password = 'admin';
+            }
+            $p = new Person();
+            if ( $name == $p->name && $password == $p->password ) {
+                // 当用户名与 密码都验证成功后
+                session_start(); // 只要调用这个函数, 服务器就会开辟一个 session 内存
+                // 同时给浏览器发送一个 PHPSESSID 的 数据, 数据值简单的理解为这个 session 内存的 id
+                // 将 当前用户的 ID存储到 SESSION 中
+                $_SESSION[ "curr_user_login_id" ] = $p->name;
+                // 清除session当中的code;
+                $_SESSION['code'] = 0;
+                // 直接跳转到 index.php 页面
+                header( "location: ./index.php" );
+                exit;
+               
+            } else {
+                $message = "用户名或密码错误( 密码错误 )";
+            }
         }
     }
 ?>
@@ -168,6 +182,13 @@
         height: 30px;
         line-height: 30px;
     }
+    .code input[name=code]{
+        width: 30%;
+    }
+    .code span {
+        background-color: rgb(228, 122, 51);
+        padding: 2px 5px;
+    }
 </style>
 <body>
     <div class="content">
@@ -181,6 +202,11 @@
             <div>
                 <label for="password">密  码:</label>
                 <input type="password" id="password" placeholder="请输入密码" autocomplete="off" name="password">
+            </div>
+            <div class="code">
+                <label for="code">验证码:</label>
+                <input type="text" id="code" placeholder="请输入验证码" autocomplete="off" name="code">
+                <span><?php echo $code?></span>
             </div>
             <div class="btnBox">
                 <input type="reset" value="重置" class="btn btn-danger">
