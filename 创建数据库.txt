@@ -1,0 +1,12 @@
+create database message;
+use message;
+CREATE TABLE text(
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    age VARCHAR(40) NOT NULL,
+    height VARCHAR(40) NOT NULL,
+    phone VARCHAR(40) NOT NULL,
+    PRIMARY KEY ( id )
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+insert into text(id,name,age,height,phone)
+    values(1,'уехЩ','18','175','15123142314');
